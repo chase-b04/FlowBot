@@ -10,7 +10,7 @@ from collections import deque
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
-# GUILD_ID = 1411617410313879585
+# GUILD_ID = 
 # MY_GUILD = discord.Object(id=GUILD_ID)
 
 SONG_QUEUES = {}
