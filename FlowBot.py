@@ -44,6 +44,12 @@ async def on_ready():
 async def play(interaction: discord.Interaction, song_query: str):
     await interaction.response.defer()
 
+
+      # Check BEFORE accessing .channel
+    if interaction.user.voice is None:
+        await interaction.followup.send("You must be in a voice channel.")
+        return
+    
     voice_channel = interaction.user.voice.channel
 
     if voice_channel is None:
@@ -163,7 +169,7 @@ async def play_next_song(voice_client, guild_id, channel):
             "options": "-vn -c:a libopus -b:a 96k",
         }
 
-        source = discord.FFmpegOpusAudio(audio_url, **ffmpeg_options, executable="ffmpeg")
+        source = discord.FFmpegOpusAudio(audio_url, **ffmpeg_options, executable="bin\\ffmpeg.exe")
 
         def after_play(error):
             if error:
@@ -172,7 +178,7 @@ async def play_next_song(voice_client, guild_id, channel):
             asyncio.run_coroutine_threadsafe(play_next_song(voice_client, guild_id, channel), bot.loop)
 
         voice_client.play(source, after=after_play)
-        asyncio.create_task(channel.send(f"Now playing: **{title}** :3"))
+        asyncio.create_task(channel.send(f"Now playing: **{title}** :D"))
 
     else:
         await voice_client.disconnect()
