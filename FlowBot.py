@@ -7,6 +7,7 @@ import yt_dlp
 import asyncio
 from collections import deque
 
+FFMPEG = os.getenv("FFMPEG_PATH", "ffmpeg")
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
@@ -45,7 +46,7 @@ async def play(interaction: discord.Interaction, song_query: str):
     await interaction.response.defer()
 
 
-      # Check BEFORE accessing .channel
+    # Check BEFORE accessing .channel
     if interaction.user.voice is None:
         await interaction.followup.send("You must be in a voice channel.")
         return
@@ -169,7 +170,7 @@ async def play_next_song(voice_client, guild_id, channel):
             "options": "-vn -c:a libopus -b:a 96k",
         }
 
-        source = discord.FFmpegOpusAudio(audio_url, **ffmpeg_options, executable="bin\\ffmpeg.exe")
+        source = discord.FFmpegOpusAudio(audio_url, **ffmpeg_options, executable=FFMPEG)
 
         def after_play(error):
             if error:
